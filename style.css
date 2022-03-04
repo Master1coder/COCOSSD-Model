@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+    background-image: url("istockphoto-1185382671-612x612.jpg");
+    background-size: cover;
+}
+.button{
+    width: 400px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 5px black;
+    background-color: white;
+}
