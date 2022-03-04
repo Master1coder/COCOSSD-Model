@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>Man And Tree Detection</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"> </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"> </script>
+        <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    </head>
+    <body>
+      <Center>
+          <h1 class="btn btn-info">Object Detection</h1>
+          <h3 id="status" class="btn btn-danger"></h3>
+          <h3 id="objects" class="btn btn-danger"></h3>
+      </Center>  
+      <script>
+img="";
+objects=[];
+status="";
+
+function preload(){
+    img=loadImage("mic.jpg");
+    }
+
+function setup(){
+    canvas=createCanvas(1000,700);
+    canvas.center();
+    objectdetector=ml5.objectDetector("cocossd",modelloaded);
+    document.getElementById("status").innerHTML="status: Detecting Objects"
+}
+
+function modelloaded(){
+    console.log("model has loaded");
+    status=true;
+}
+
+function gotresult(error,results){
+if(error){
+    console.log(error);
+}
+console.log(results);
+objects=results;
+}
+
+function draw(){
+    image(img,0,0,1000,700);
+    if(status!=""){
+        objectdetector.detect(img,gotresult);
+        for(i=0;i<objects.length;i++){
+            document.getElementById("status").innerHTML="Status: Objects Detected";
+            document.getElementById("objects").innerHTML="Number Of Objects Detected Is "+objects.length;
+           
+           fill("#ff0000"); percent=floor(objects[i].confidence*100);
+            text(objects[i].label+" "+percent+"%",objects[i].x+15,objects[i].y+15);
+            noFill();
+            stroke("#ff0000");
+            rect(objects[i].x,objects[i].y,objects[i].width,objects[i].height);
+        }
+    }
+}
+
+
+
+
+          
+      </script>
+      <br><A href="index.html"><button class="btn btn-primary">Back</button></A>
+    </body>
+    </html>
